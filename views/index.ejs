@@ -6,15 +6,21 @@
     <link rel="stylesheet" type="text/css" href="/css/style.css">
   </head>
   <body>
-    <ul id="messages"></ul>
-    <form action="">
-      <div class="container-fluid">
-        <div class="row">
-          <input id="m" autocomplete="off" class="col-10" />
-          <button class="btn btn-default col-2">Send</button>
+    <div id="chatroom" style="display: none;">
+      <ul id="messages"></ul>
+      <form action="">
+        <div class="container-fluid">
+          <div class="row">
+            <input id="m" autocomplete="off" class="col-10" />
+            <button class="btn btn-default col-2">Send</button>
+          </div>
         </div>
-      </div>
-    </form>
+      </form>
+    </div>
+    <div class="container" id="login">
+      <p>Enter your username:</p>
+      <input type="text" id="username" placeholder="Username">
+    </div>
     <script src="/socket.io/socket.io.js"></script>
     <script
   src="https://code.jquery.com/jquery-3.3.1.js"
@@ -23,16 +29,63 @@
     <script>
       $(function() {
         var socket = io();
-        $('form').submit(function(){
-          if($('#m').val().trim()){
-            socket.emit('chat message', $('#m').val());
+        var username;
+        var chatroom = $('#chatroom');
+        var login = $('#login');
+        function sendMessage(){
+          var message = $('#m').val();
+          if(message.trim()){
             $('#m').val('');
+            $('#m')[0].scrollTop = $('#m')[0].scrollHeight;
+            $('#messages').append($('<li>').text(username+' : '+message));
+            socket.emit('chat message', message);
           }
+        };
+
+        function log(msg){
+          $('#messages').append($('<li>').text(msg));
+        };
+
+        function setUsername(){
+          username = $('#username').val();
+          if(username.trim()){
+            login.fadeOut();
+            chatroom.fadeIn();
+            socket.emit('new user', username);
+          }
+        }
+
+        $(document).keydown(function(evt){
+          if(evt.keyCode === 13){
+            if(username){
+              sendMessage();
+            }else{
+              setUsername();
+            }
+          }
+        });
+
+        $('form').on('keyup keypress', function(e) {
+          var keyCode = e.keyCode || e.which;
+          if (keyCode === 13) { 
+            e.preventDefault();
+            return false;
+          }
+        });
+
+        $('form').submit(function(){
+          var message = $('#m').val();
+          sendMessage();
           return false
         });
-        socket.on('chat message', function(msg){
-          $('#messages').append($('<li>').text(msg));
+        
+        socket.on('chat message', function(data){
+          $('#messages').append($('<li>').text(data.username + " : " + data.message));
         });
+        socket.on('user connected', function(data){
+          log(data.username + ' has connected!');
+          });
+        console.log(socket);
       });
     </script>
   </body>

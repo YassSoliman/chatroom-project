@@ -2,6 +2,7 @@ var express = require('express');
 var app = express();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
+var users = {};
 
 app.use(express.static("public"));
 app.set("view engine", "ejs");
@@ -11,13 +12,26 @@ app.get("/", function(req, res){
 });
 
 io.on('connection', function(socket){
-	// console.log('A user connected');
+	var newUser = true;
+	
+	socket.on('new user', function(name){
+		if(newUser){
+			console.log(name);
+			socket.username = name;
+		}
+		socket.broadcast.emit('user connected', {
+			username: socket.username
+		});
+	});
+
 	socket.on('disconnect', function(){
-		// console.log('A user disconnected');
 	});
 	socket.on('chat message', function(msg){
 		// console.log('message: ' + msg);
-		io.emit('chat message', msg);
+		socket.broadcast.emit('chat message', {
+			message: msg,
+			username: socket.username
+		});
 	});
 });
 
