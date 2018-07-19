@@ -1,0 +1,23 @@
+{
+  "name": "chatroom-project",
+  "version": "1.0.0",
+  "description": "A chatroom web app",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/YassSoliman/chatroom-project.git"
+  },
+  "author": "Yasser Soliman",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/YassSoliman/chatroom-project/issues"
+  },
+  "homepage": "https://github.com/YassSoliman/chatroom-project#readme",
+  "dependencies": {
+    "express": "^4.16.3",
+    "socket.io": "^2.1.1"
+  }
+}
