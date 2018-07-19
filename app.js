@@ -3,8 +3,11 @@ var app = express();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
 
+app.use(express.static("public"));
+app.set("view engine", "ejs");
+
 app.get("/", function(req, res){
-	res.sendFile(__dirname + '/views/index.html');
+	res.render('index');
 });
 
 io.on('connection', function(socket){
