@@ -7,6 +7,8 @@ var users = {};
 app.use(express.static("public"));
 app.set("view engine", "ejs");
 
+var history = [];
+
 app.get("/", function(req, res){
 	res.render('index');
 });
@@ -22,6 +24,7 @@ io.on('connection', function(socket){
 		socket.broadcast.emit('user connected', {
 			username: socket.username
 		});
+		socket.emit('load history',history);
 	});
 
 	socket.on('disconnect', function(){
@@ -35,6 +38,14 @@ io.on('connection', function(socket){
 			message: msg,
 			username: socket.username
 		});
+
+		history.push({
+			message: msg,
+			username: socket.username
+		})
+		if(history.length >20){
+			history.shift();
+		}
 	});
 });
 
