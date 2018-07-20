@@ -18,6 +18,7 @@ io.on('connection', function(socket){
 		if(newUser){
 			console.log(name);
 			socket.username = name;
+			socket.color = '#000002';
 		}
 		socket.broadcast.emit('user connected', {
 			username: socket.username
@@ -32,10 +33,15 @@ io.on('connection', function(socket){
 		}
 	});
 
+	socket.on('change color', function(color){
+		socket.color = color;
+	});
+
 	socket.on('chat message', function(msg){
 		socket.broadcast.emit('chat message', {
 			message: msg,
-			username: socket.username
+			username: socket.username,
+			color: socket.color
 		});
 	});
 });

@@ -11,7 +11,7 @@ $(function() {
     var message = $('#m').val();
     if(message.trim()){
       $('#m').val('');
-      insertMessage({username: username, message: message});
+      insertMessage({username: username, message: message, color: color});
       chat[0].scrollTop = chat[0].scrollHeight;
       socket.emit('chat message', message);
     }
@@ -31,7 +31,7 @@ $(function() {
   };
 
   function insertMessage(data){
-    var userTag = $('<span class="username">').text(data.username);
+    var userTag = $('<span class="username">').css("color", data.color).text(data.username);
     var contentTag = $('<span class="content">').text(data.message);
     var result = $('<li>').append(userTag,' : ',contentTag);
     chat.append(result);
@@ -39,7 +39,7 @@ $(function() {
 
   $('#color').change(function(){
     color = colorPicker.val();
-    socket.emit('color change', color)
+    socket.emit('change color', color);
     console.log(color);
   });
 
