@@ -21,10 +21,15 @@ io.on('connection', function (socket) {
 	socket.on('new user', function (name) {
 		if (newUser) {
 			console.log(name);
-			UsersOnline.push(name)
+			var user = {
+				username:name,
+				uuid:socket.id
+			};
+			UsersOnline.push(user)
 			socket.username = name;
 			socket.color = '#000002';
 		}
+		
 		socket.broadcast.emit('user connected', {
 			username: socket.username
 		});
@@ -35,7 +40,7 @@ io.on('connection', function (socket) {
 		socket.broadcast.emit('user disconnect', {
 			username: socket.username
 		});
-		UsersOnline = UsersOnline.filter((user) => user !== socket.username);
+		UsersOnline = UsersOnline.filter((user) => user.uuid !== socket.id);
 	});
 
 	socket.on('change color', function (color) {
@@ -67,15 +72,19 @@ io.on('connection', function (socket) {
 					socket.emit('server message', 'Commands available : "/help","/list","/username"');
 					break;
 				case '/list':
-					socket.emit('server message', "The users online are : " + UsersOnline.toString());
+					socket.emit('server message', "The users online are : " + UsersOnline.map((user)=>user.username).toString());
 					break;
 				case '/username':
 				    var newUsername = msg.split(' ').filter((word) => word !== '/username').join(' '); 
 				    if(newUsername.trim()){
 				    	var msg = "Name has been changed to : " + newUsername;
-					    UsersOnline = UsersOnline.filter((name) => name !== socket.username);
-					    UsersOnline.push(newUsername);
-					    socket.username = newUsername;
+					    UsersOnline = UsersOnline.filter((user) => user.uuid !== socket.id);
+						var user = {
+							username:newUsername,
+							uuid:socket.id
+						};
+						UsersOnline.push(user);
+						socket.username = newUsername;
 					    socket.emit('name change', newUsername);
 						socket.emit('server message', msg);
 				    } else {
