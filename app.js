@@ -11,7 +11,7 @@ var history = [];
 var UsersOnline = []
 
 
-app.get("/", function(req, res){
+app.get("/", function (req, res) {
 	res.render('index');
 });
 
@@ -28,26 +28,28 @@ io.on('connection', function (socket) {
 		socket.broadcast.emit('user connected', {
 			username: socket.username
 		});
-		socket.emit('load history',history);
+		socket.emit('load history', history);
 	});
 
 	socket.on('disconnect', function () {
 		socket.broadcast.emit('user disconnect', {
 			username: socket.username
 		});
-		UsersOnline.filter((user)=>user!==socket.username);
+		UsersOnline.filter((user) => user !== socket.username);
+	});
 
 
-	socket.on('change color', function(color){
+
+	socket.on('change color', function (color) {
 		socket.color = color;
 	});
 
 	socket.on('chat message', function (msg) {
 		if (msg[0] !== '/') {
 			socket.broadcast.emit('chat message', {
-			  message: msg,
-			  username: socket.username,
-			  color: socket.color
+				message: msg,
+				username: socket.username,
+				color: socket.color
 			});
 
 			history.push({
@@ -57,22 +59,23 @@ io.on('connection', function (socket) {
 			if (history.length > 20) {
 				history.shift();
 			}
-		}else{
+		} else {
 			//chat command
-			switch(msg){
+			switch (msg) {
 				case '/help':
-				socket.emit('server message', 'Commands available: "/help","/list"');
-				break;
+					socket.emit('server message', 'Commands available: "/help","/list"');
+					break;
 				case '/list':
-					socket.emit('server message', "The users online are :"+UsersOnline.toString());
-				break;
+					socket.emit('server message', "The users online are :" + UsersOnline.toString());
+					break;
 				default:
 					socket.emit('server message', 'No command found type "/help" for a list of commands');
-				break;
+					break;
 			}
 		}
 
 
+	});
 });
 
 http.listen(3000, function () {
