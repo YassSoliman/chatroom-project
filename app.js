@@ -23,7 +23,7 @@ io.on('connection', function (socket) {
 			console.log(name);
 			var user = {
 				username:name,
-				uuid:socket.id
+				id:socket.id
 			};
 			UsersOnline.push(user)
 			socket.username = name;
@@ -40,7 +40,7 @@ io.on('connection', function (socket) {
 		socket.broadcast.emit('user disconnect', {
 			username: socket.username
 		});
-		UsersOnline = UsersOnline.filter((user) => user.uuid !== socket.id);
+		UsersOnline = UsersOnline.filter((user) => user.id !== socket.id);
 	});
 
 	socket.on('change color', function (color) {
@@ -78,10 +78,10 @@ io.on('connection', function (socket) {
 				    var newUsername = msg.split(' ').filter((word) => word !== '/username').join(' '); 
 				    if(newUsername.trim()){
 				    	var msg = "Name has been changed to : " + newUsername;
-					    UsersOnline = UsersOnline.filter((user) => user.uuid !== socket.id);
+					    UsersOnline = UsersOnline.filter((user) => user.id !== socket.id);
 						var user = {
 							username:newUsername,
-							uuid:socket.id
+							id:socket.id
 						};
 						UsersOnline.push(user);
 						socket.username = newUsername;
