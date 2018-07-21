@@ -35,10 +35,8 @@ io.on('connection', function (socket) {
 		socket.broadcast.emit('user disconnect', {
 			username: socket.username
 		});
-		UsersOnline.filter((user) => user !== socket.username);
+		UsersOnline = UsersOnline.filter((user) => user !== socket.username);
 	});
-
-
 
 	socket.on('change color', function (color) {
 		socket.color = color;
