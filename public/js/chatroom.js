@@ -19,7 +19,7 @@ $(function() {
 
 
   function announce(msg){
-    chat.append($('<li>').text(msg));
+    chat.append($('<li>').addClass('announcement').text(msg));
     chat[0].scrollTop = chat[0].scrollHeight;
   };
 
