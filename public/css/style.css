@@ -66,6 +66,13 @@ hr.style-eight:after {
 	font-weight: bold;
 }
 
+.announcement {
+	text-align: center;
+	/*color: #b9b9b9;*/
+	text-shadow: 1px 1px 2px black, 0 0 0.1em #00ced8, 0 0 0.2em #00ad65;
+	color: white;
+}
+
 #username {
 	width: 100%;
 	line-height: 40px;
@@ -88,10 +95,12 @@ hr.style-eight:after {
 	height: 100%;
 	padding: 10px 20px 52px 20px; 
 	overflow-y: scroll;
+	border: 10px solid #a8c0c1;
 }
 #messages li { 
 	padding: 5px 10px; 
+	background: #e8fdfd;
 }
 #messages li:nth-child(odd) { 
-	background: #eee; 
+	background: #ddffff; 
 }

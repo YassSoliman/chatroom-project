@@ -80,8 +80,7 @@ io.on('connection', function (socket) {
 						socket.emit('server message', msg);
 				    } else {
 				    	socket.emit('server message', "Sorry good sir, invalid username");
-				    }
-				    
+				    }				    
 					break;
 				default:
 					socket.emit('server message', 'No command found type "/help" for a list of commands');
