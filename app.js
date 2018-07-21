@@ -38,8 +38,6 @@ io.on('connection', function (socket) {
 		UsersOnline = UsersOnline.filter((user) => user !== socket.username);
 	});
 
-
-
 	socket.on('change color', function (color) {
 		socket.color = color;
 	});
