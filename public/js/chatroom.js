@@ -20,6 +20,7 @@ $(function() {
 
   function announce(msg){
     chat.append($('<li>').text(msg));
+    chat[0].scrollTop = chat[0].scrollHeight;
   };
 
   function setUsername(){
@@ -83,5 +84,8 @@ $(function() {
   });
   socket.on('server message', function(message){
     announce(message);
+  });
+  socket.on('name change', function(name){
+    username = name;
   });
 });

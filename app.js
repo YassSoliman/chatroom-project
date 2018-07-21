@@ -59,13 +59,29 @@ io.on('connection', function (socket) {
 				history.shift();
 			}
 		} else {
-			//chat command
-			switch (msg) {
+			// Store the command in a variable
+			var command = msg.split(' ')[0];
+			// Verify which command the user input
+			switch (command) {
 				case '/help':
-					socket.emit('server message', 'Commands available: "/help","/list"');
+					socket.emit('server message', 'Commands available : "/help","/list","/username"');
 					break;
 				case '/list':
-					socket.emit('server message', "The users online are :" + UsersOnline.toString());
+					socket.emit('server message', "The users online are : " + UsersOnline.toString());
+					break;
+				case '/username':
+				    var newUsername = msg.split(' ').filter((word) => word !== '/username').join(' '); 
+				    if(newUsername.trim()){
+				    	var msg = "Name has been changed to : " + newUsername;
+					    UsersOnline = UsersOnline.filter((name) => name !== socket.username);
+					    UsersOnline.push(newUsername);
+					    socket.username = newUsername;
+					    socket.emit('name change', newUsername);
+						socket.emit('server message', msg);
+				    } else {
+				    	socket.emit('server message', "Sorry good sir, invalid username");
+				    }
+				    
 					break;
 				default:
 					socket.emit('server message', 'No command found type "/help" for a list of commands');
