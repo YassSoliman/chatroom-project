@@ -3,21 +3,23 @@ $(function() {
   var username;
   var chatroom = $('#chatroom');
   var login = $('#login');
+  var chat = $('#messages');
+  var colorPicker = $('#color');
+  var color = colorPicker.val();
 
   function sendMessage(){
     var message = $('#m').val();
     if(message.trim()){
       $('#m').val('');
-      $('#m')[0].scrollTop = $('#m')[0].scrollHeight;
-      $('#messages').append($('<li>').text(username+' : '+message));
+      insertMessage({username: username, message: message, color: color});
+      chat[0].scrollTop = chat[0].scrollHeight;
       socket.emit('chat message', message);
     }
   };
 
-  function log(msg){
-    $('#messages').append($('<li>').text(msg));
-    $('#messages').scrollTop($('#messages')[0].scrollHeight);
 
+  function announce(msg){
+    chat.append($('<li>').text(msg));
   };
 
   function setUsername(){
@@ -27,7 +29,20 @@ $(function() {
       chatroom.fadeIn();
       socket.emit('new user', username);
     }
-  }
+  };
+
+  function insertMessage(data){
+    var userTag = $('<span class="username">').css("color", data.color).text(data.username);
+    var contentTag = $('<span class="content">').text(data.message);
+    var result = $('<li>').append(userTag,' : ',contentTag);
+    chat.append(result);
+  };
+
+  $('#color').change(function(){
+    color = colorPicker.val();
+    socket.emit('change color', color);
+    console.log(color);
+  });
 
   $(document).keydown(function(evt){
     if(evt.keyCode === 13){
@@ -53,10 +68,10 @@ $(function() {
   });
 
   socket.on('chat message', function(data){
-    log(data.username + " : " + data.message);
+    insertMessage(data);
   });
   socket.on('user connected', function(data){
-    log(data.username + ' has connected!');
+    announce(data.username + ' has connected!');
   });
   socket.on('load history', function(data){
     if(Array.isArray(data)){
@@ -64,9 +79,9 @@ $(function() {
     }
   });
   socket.on('user disconnect', function(data){
-    log(data.username + ' has disconnected!');
+    announce(data.username + ' has disconnected!');
   });
   socket.on('server message', function(message){
-    log(message);
+    announce(message);
   });
 });
