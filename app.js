@@ -54,7 +54,8 @@ io.on('connection', function (socket) {
 
 			history.push({
 				message: msg,
-				username: socket.username
+				username: socket.username,
+				color: socket.color
 			})
 			if (history.length > 20) {
 				history.shift();
