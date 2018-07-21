@@ -75,7 +75,7 @@ $(function() {
   });
   socket.on('load history', function(data){
     if(Array.isArray(data)){
-      data.forEach((line)=>log(line.username + " : " + line.message))
+      data.forEach((line)=>insertMessage(line))
     }
   });
   socket.on('user disconnect', function(data){
