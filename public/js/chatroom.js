@@ -6,7 +6,7 @@ $(function() {
   var chat = $('#messages');
   var colorPicker = $('#color');
   var color = colorPicker.val();
-
+// Appends message to current client
   function sendMessage(){
     var message = $('#m').val();
     if(message.trim()){
@@ -30,7 +30,7 @@ $(function() {
       socket.emit('new user', username);
     }
   };
-
+// Send message to other clients
   function insertMessage(data){
     var userTag = $('<span class="username">').css("color", data.color).text(data.username);
     var contentTag = $('<span class="content">').text(data.message);
