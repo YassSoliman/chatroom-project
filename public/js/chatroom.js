@@ -16,6 +16,8 @@ $(function() {
 
   function log(msg){
     $('#messages').append($('<li>').text(msg));
+    $('#messages').scrollTop($('#messages')[0].scrollHeight);
+
   };
 
   function setUsername(){
@@ -63,5 +65,8 @@ $(function() {
   });
   socket.on('user disconnect', function(data){
     log(data.username + ' has disconnected!');
+  });
+  socket.on('server message', function(message){
+    log(message);
   });
 });
