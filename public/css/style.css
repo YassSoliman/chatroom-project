@@ -1,10 +1,14 @@
+@import url('https://fonts.googleapis.com/css?family=Raleway:400,700');
+
+
 * { 
 	margin: 0; 
 	padding: 0; 
 	box-sizing: border-box; 
 }
 body { 
-	font: 1.5em Helvetica, Arial; 
+	font: 1.5em 'Raleway', Helvetica, Arial; 
+	background-color: #e4ffff;
 }
 form { 
 	background: #000;
@@ -19,14 +23,71 @@ form input {
 }
 form button { 
 	background: rgb(130, 224, 255); 
+	float: right;
 }
 form .btn {
 	border-radius: 0;
 }
+
+p {
+	text-align: center;
+}
+
+ul {
+	word-wrap: break-word;
+}
+
+hr.style-eight {
+    overflow: visible; /* For IE */
+    padding: 0;
+    border: none;
+    border-top: medium double #333;
+    color: #333;
+    text-align: center;
+}
+hr.style-eight:after {
+    content: "§";
+    background-color: #e4ffff;
+    display: inline-block;
+    position: relative;
+    top: -0.7em;
+    font-size: 0.6em;
+    padding: 0 0.25em;
+    border: 1px solid black;
+    border-radius: 100%;
+}
+
+.container {
+	margin: 125px auto;
+	width: 300;
+}
+
+.username {
+	font-weight: bold;
+}
+
+#username {
+	width: 100%;
+	line-height: 40px;
+	padding: 2px 13px 2px 13px;
+	border: 5px solid black;
+}
+
+#color {
+	margin:0;
+	padding: 0;
+	height: 52px;
+	width: 52px;
+	border: none;
+	float: left;
+}
+
 #messages { 
 	list-style-type: none; 
 	margin: 0; 
-	padding: 0; 
+	height: 100%;
+	padding: 10px 20px 52px 20px; 
+	overflow-y: scroll;
 }
 #messages li { 
 	padding: 5px 10px; 

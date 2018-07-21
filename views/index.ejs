@@ -6,34 +6,28 @@
     <link rel="stylesheet" type="text/css" href="/css/style.css">
   </head>
   <body>
-    <ul id="messages"></ul>
-    <form action="">
-      <div class="container-fluid">
-        <div class="row">
-          <input id="m" autocomplete="off" class="col-10" />
-          <button class="btn btn-default col-2">Send</button>
+    <div id="chatroom" style="display: none;">
+      <ul id="messages"></ul>
+      <form action="" class="form-inline">
+        <div class="container-fluid">
+          <div class="row">
+            <input type="color" class="col-1" value="#000002" id="color" />
+            <input id="m" autocomplete="off" class="col-9" />
+            <button class="btn btn-default col-2">Send</button>
+          </div>
         </div>
-      </div>
-    </form>
+      </form>
+    </div>
+    <div class="container" id="login">
+      <p>Enter your username</p>
+      <hr class="style-eight">
+      <input type="text" id="username" placeholder="Username">
+    </div>
     <script src="/socket.io/socket.io.js"></script>
     <script
   src="https://code.jquery.com/jquery-3.3.1.js"
   integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
   crossorigin="anonymous"></script>
-    <script>
-      $(function() {
-        var socket = io();
-        $('form').submit(function(){
-          if($('#m').val().trim()){
-            socket.emit('chat message', $('#m').val());
-            $('#m').val('');
-          }
-          return false
-        });
-        socket.on('chat message', function(msg){
-          $('#messages').append($('<li>').text(msg));
-        });
-      });
-    </script>
+    <script src="/js/chatroom.js"></script>
   </body>
 </html>
