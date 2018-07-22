@@ -94,12 +94,16 @@ io.on('connection', function (socket) {
 				case '/msg':
 					var userToMessage = msg.split(' ')[1];
 					userToMessage = UsersOnline.find((user)=>user.username==userToMessage);
-					var whisperMessage = msg.split(' ').slice(2).join(' ');
-					socket.to(userToMessage.id).emit('chat message',{
-						message: whisperMessage,
-						username: socket.username,
-						color: socket.color
-					});
+					if(userToMessage){
+						var whisperMessage = msg.split(' ').slice(2).join(' ');
+						socket.to(userToMessage.id).emit('chat message',{
+							message: whisperMessage,
+							username: socket.username,
+							color: socket.color
+						});
+					}else{
+						socket.emit('server message', 'No user found');
+					}
 				break;
 				default:
 					socket.emit('server message', 'No command found type "/help" for a list of commands');
