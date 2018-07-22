@@ -6,6 +6,9 @@ $(function() {
   var chat = $('#messages');
   var colorPicker = $('#color');
   var color = colorPicker.val();
+  var imagePicker = $('input:file');
+  var sendingImage = false;
+  var imageData;
 // Appends message to current client
   function sendMessage(){
     var message = $('#m').val();
@@ -14,14 +17,34 @@ $(function() {
       insertMessage({username: username, message: message, color: color});
       chat[0].scrollTop = chat[0].scrollHeight;
       socket.emit('chat message', message);
-    }
-    if(document.getElementById('img').files[0]){
-      reader = new FileReader()
-      reader.readAsDataURL(document.getElementById('img').files[0])
-      socket.emit('image', reader.result);
+      if(sendingImage){
+        socket.emit('image', imageData);
+      }
     }
   };
 
+  $('input:file').change(function(event){
+    var img = $(this)[0].files[0];
+    var reader = new FileReader();
+    reader.addEventListener("load", function(){
+      sendingImage = true;
+      imageData = reader.result;
+      // socket.emit('image', reader.result);
+    }, false);
+    if(img){
+      reader.readAsDataURL(img);
+    }
+  });
+
+  function sendImage(data){
+    var chatImage = $('<img>').attr("src", data).addClass('chatImage');
+    var result = $('<li>').append(chatImage);
+    chat.append(result);
+    sendingImage = false;
+    imageData = '';
+    imagePicker.val('');
+    chat[0].scrollTop = chat[0].scrollHeight;
+  }
 
   function announce(msg){
     chat.append($('<li>').addClass('announcement').text(msg));
@@ -66,6 +89,8 @@ $(function() {
     }
   });
 
+
+
   $('form').on('keyup keypress', function(e) {
     var keyCode = e.keyCode || e.which;
     if (keyCode === 13) { 
@@ -101,7 +126,6 @@ $(function() {
     username = name;
   });
   socket.on('image', function(data){
-    var image = $('<img>').attr('src',data);
-    chat.append(image);
+    sendImage(data);
   });
 });

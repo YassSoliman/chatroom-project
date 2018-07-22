@@ -73,6 +73,10 @@ hr.style-eight:after {
 	color: white;
 }
 
+.chatImage {
+	max-width: 350px;
+}
+
 #username {
 	width: 100%;
 	line-height: 40px;
