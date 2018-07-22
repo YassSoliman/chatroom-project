@@ -90,6 +90,16 @@ io.on('connection', function (socket) {
 				    	socket.emit('server message', "Sorry good sir, invalid username");
 				    }				    
 					break;
+				case '/msg':
+					var userToMessage = msg.split(' ')[1];
+					userToMessage = UsersOnline.find((user)=>user.username==userToMessage);
+					var whisperMessage = msg.split(' ').slice(2).join(' ');
+					socket.to(userToMessage.id).emit('chat message',{
+						message: whisperMessage,
+						username: socket.username,
+						color: socket.color
+					});
+				break;
 				default:
 					socket.emit('server message', 'No command found type "/help" for a list of commands');
 					break;
