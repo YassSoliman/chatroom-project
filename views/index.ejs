@@ -12,7 +12,7 @@
         <div class="container-fluid">
           <div class="row">
             <input type="color" class="col-1" value="#000002" id="color" />
-            <input id='img' type="file" name="pic" accept="image/*">
+            <input id='img' type="file" name="pic" accept="image/*" onchange="reader = new FileReader();reader.readAsDataURL(document.getElementById('img').files[0])">
             <input id="m" autocomplete="off" class="col-9" />
             <button class="btn btn-default col-2">Send</button>
           </div>

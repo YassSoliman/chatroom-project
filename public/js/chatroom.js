@@ -16,8 +16,6 @@ $(function() {
       socket.emit('chat message', message);
     }
     if(document.getElementById('img').files[0]){
-      reader = new FileReader()
-      reader.readAsDataURL(document.getElementById('img').files[0])
       socket.emit('image', reader.result);
     }
   };
