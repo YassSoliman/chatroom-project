@@ -31,18 +31,24 @@ $(function() {
       socket.emit('new user', username);
     }
   };
+  // Attempt at fixing the mobile undefined bug, didnt work but WIP
+  // function resetUsername(){
+  //   username = '';
+  //   login.fadeIn();
+  //   chatroom.fadeOut();
+  // }
 // Send message to other clients
   function insertMessage(data){
     var userTag = $('<span class="username">').css("color", data.color).text(data.username);
     var contentTag = $('<span class="content">').text(data.message);
     var result = $('<li>').append(userTag,' : ',contentTag);
     chat.append(result);
+    chat[0].scrollTop = chat[0].scrollHeight;
   };
 
   $('#color').change(function(){
     color = colorPicker.val();
     socket.emit('change color', color);
-    console.log(color);
   });
 
   $(document).keydown(function(evt){
@@ -81,6 +87,7 @@ $(function() {
   });
   socket.on('user disconnect', function(data){
     announce(data.username + ' has disconnected!');
+    // resetUsername();
   });
   socket.on('server message', function(message){
     announce(message);

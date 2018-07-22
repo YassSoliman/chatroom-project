@@ -20,7 +20,6 @@ io.on('connection', function (socket) {
 
 	socket.on('new user', function (name) {
 		if (newUser) {
-			console.log(name);
 			var user = {
 				username:name,
 				id:socket.id
