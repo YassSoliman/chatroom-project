@@ -110,9 +110,12 @@ io.on('connection', function (socket) {
 					break;
 			}
 		}
-
-
 	});
+	socket.on('image',function(data){
+		socket.emit('image',data);
+		socket.broadcast.emit('image',data)
+	});
+
 });
 
 http.listen(3000, function () {

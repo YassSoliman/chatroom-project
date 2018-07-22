@@ -15,6 +15,11 @@ $(function() {
       chat[0].scrollTop = chat[0].scrollHeight;
       socket.emit('chat message', message);
     }
+    if(document.getElementById('img').files[0]){
+      reader = new FileReader()
+      reader.readAsDataURL(document.getElementById('img').files[0])
+      socket.emit('image', reader.result);
+    }
   };
 
 
@@ -94,5 +99,9 @@ $(function() {
   });
   socket.on('name change', function(name){
     username = name;
+  });
+  socket.on('image', function(data){
+    var image = $('<img>').attr('src',data);
+    chat.append(image);
   });
 });
