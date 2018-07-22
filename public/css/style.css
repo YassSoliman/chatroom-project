@@ -10,6 +10,10 @@ body {
 	font: 1.5em 'Raleway', Helvetica, Arial; 
 	background-color: #e4ffff;
 }
+div {
+	margin: 0;
+	padding: 0;
+}
 form { 
 	background: #000;
 	padding: 2px;
@@ -76,6 +80,39 @@ hr.style-eight:after {
 .chatImage {
 	max-width: 350px;
 }
+
+#img {
+	height: 0.1px;
+	width: 0.1px;
+	opacity: 0;
+	overflow: hidden;
+	position: absolute;
+	z-index: -1;
+}
+
+#img + label {
+    font-size: 1.25em;
+    font-weight: 700;
+    color: white;
+    background-color: black;
+    display: inline-block;
+	text-align: center;
+	padding: 7px 0px;
+	transition: 0.3s all;
+}
+
+#img + label:hover {
+    background-color: red;
+    text-shadow: 2px 2px #5f4949;
+}
+#img:focus + label {
+	background-color: black;
+}
+
+#img + label {
+	cursor: pointer;
+}
+
 
 #username {
 	width: 100%;
