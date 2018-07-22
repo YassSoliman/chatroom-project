@@ -63,12 +63,13 @@ io.on('connection', function (socket) {
 				history.shift();
 			}
 		} else {
+			var commandList = ["/help","/list","/username","/msg"];
 			// Store the command in a variable
 			var command = msg.split(' ')[0];
 			// Verify which command the user input
 			switch (command) {
 				case '/help':
-					socket.emit('server message', 'Commands available : "/help","/list","/username"');
+					socket.emit('server message', 'Commands available : '+commandList.toString());
 					break;
 				case '/list':
 					socket.emit('server message', "The users online are : " + UsersOnline.map((user)=>user.username).toString());
