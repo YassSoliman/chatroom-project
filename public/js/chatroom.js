@@ -9,6 +9,8 @@ $(function() {
   var imagePicker = $('input:file');
   var sendingImage = false;
   var imageData;
+  var isTyping = $('#isTyping');
+  var typing = false;
 // Appends message to current client
   function sendMessage(){
     var message = $('#m').val();
@@ -104,6 +106,36 @@ $(function() {
     return false
   });
 
+  // User is typing function
+  $('input[id="m"]').keydown(function(){
+    if(!typing){
+      socket.emit('user typing', {username: username, typing: true});
+      typing = true;
+    }
+  });
+
+  $('input[id="m"]').focusout(function(){
+    if(typing){
+      socket.emit('user typing', {username: username, typing: false});
+      typing = false;
+    }
+  });
+
+  function showIsTyping(data){
+    var user = $('<span class="username">').css("color", data.color).attr("id", data.username).text(data.username + ' is typing... ');
+    isTyping.append(user);
+    isTyping.fadeIn();
+  };
+  function stopIsTyping(username){
+    var id = '#' + username;
+    if($(id).length == 1){
+      isTyping.fadeOut(function(){
+        $(id).remove();
+      });
+    }
+    
+  };
+
   socket.on('chat message', function(data){
     insertMessage(data);
   });
@@ -127,5 +159,11 @@ $(function() {
   });
   socket.on('image', function(data){
     sendImage(data);
+  });
+  socket.on('user typing', function(data){
+    showIsTyping(data);
+  });
+  socket.on('stop typing', function(data){
+    stopIsTyping(data);
   });
 });

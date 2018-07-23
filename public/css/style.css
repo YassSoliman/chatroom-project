@@ -113,6 +113,22 @@ hr.style-eight:after {
 	cursor: pointer;
 }
 
+.typing.container-fluid {
+	position: absolute;
+	bottom: 63px;
+	font-size: 0.8em;
+	left: 120px;
+	max-width: 350px;
+
+}
+
+span.typingText {
+	background: #76cccc;
+	color: white;
+	border: 2px solid #599e9b;
+	border-radius: 15%;
+	display: none;
+}
 
 #username {
 	width: 100%;
@@ -134,7 +150,7 @@ hr.style-eight:after {
 	list-style-type: none; 
 	margin: 0; 
 	height: 100%;
-	padding: 10px 20px 52px 20px; 
+	padding: 10px 20px 75px 20px; 
 	overflow-y: scroll;
 	border: 10px solid #a8c0c1;
 }

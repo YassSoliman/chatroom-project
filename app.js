@@ -115,6 +115,13 @@ io.on('connection', function (socket) {
 		socket.emit('image',data);
 		socket.broadcast.emit('image',data)
 	});
+	socket.on('user typing', function(data){
+		if(data.typing){
+			socket.broadcast.emit('user typing', {username: socket.username, color: socket.color});
+		} else {
+			socket.broadcast.emit('stop typing', socket.username);
+		}
+	});
 
 });
 
