@@ -14,22 +14,22 @@ div {
 	margin: 0;
 	padding: 0;
 }
-form { 
+#ChatInput { 
 	background: #000;
 	padding: 2px;
 	position: fixed; 
 	bottom: 0; 
 	width: 100%; 
 }
-form input { 
+#ChatInput input { 
 	border: 0; 
 	padding: 10px;
 }
-form button { 
+#ChatInput button { 
 	background: rgb(130, 224, 255); 
 	float: right;
 }
-form .btn {
+#ChatInput .btn {
 	border-radius: 0;
 }
 

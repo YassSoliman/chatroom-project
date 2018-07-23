@@ -112,8 +112,8 @@ io.on('connection', function (socket) {
 		}
 	});
 	socket.on('image',function(data){
-		socket.emit('image',data);
-		socket.broadcast.emit('image',data)
+		socket.emit('chat message',data);
+		socket.broadcast.emit('chat message',data)
 	});
 
 });

@@ -71,32 +71,25 @@ $(function() {
     socket.emit('change color', color);
   });
 
-  $(document).keydown(function(evt){
-    if(evt.keyCode === 13){
-      if(username){
-        sendMessage();
-        if(sendingImage){
-          socket.emit('image', imageData);
-        }
-      }else{
+  $('#UsernameInput').submit(function(evt){
+      if(!username){
         setUsername();
       }
-    }
   });
 
   $("#messages").bind("DOMNodeInserted",function(){
     chat[0].scrollTop = chat[0].scrollHeight;
   });
 
-  $('form').on('keyup keypress', function(e) {
-    var keyCode = e.keyCode || e.which;
-    if (keyCode === 13) { 
-      e.preventDefault();
-      return false;
-    }
-  });
+  //$('form').on('keyup keypress', function(e) {
+  //  var keyCode = e.keyCode || e.which;
+  //  if (keyCode === 13) { 
+  //    e.preventDefault();
+  //    return false;
+  //  }
+  //});
 
-  $('form').submit(function(){
+  $('#ChatInput').submit(function(){
     sendMessage();
     if(sendingImage){
       socket.emit('image', imageData);

@@ -9,7 +9,7 @@
   <body>
     <div id="chatroom" style="display: none;">
       <ul id="messages"></ul>
-      <form action="" class="form-inline">
+      <form  class="form-inline" id='ChatInput'>
         <div class="container-fluid">
           <div class="row">
             <div class="col-3 col-sm-2 col-md-1">
@@ -32,7 +32,9 @@
     <div class="container" id="login">
       <p>Enter your username</p>
       <hr class="style-eight">
-      <input type="text" id="username" placeholder="Username">
+      <form id='UsernameInput' >
+        <input type="text" id="username" placeholder="Username">
+      </form>
     </div>
     <script src="/socket.io/socket.io.js"></script>
     <script
