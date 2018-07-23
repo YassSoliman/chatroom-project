@@ -42,23 +42,18 @@ io.on('connection', function (socket) {
 		UsersOnline = UsersOnline.filter((user) => user.id !== socket.id);
 	});
 
-	socket.on('change color', function (color) {
-		socket.color = color;
-	});
+	//socket.on('change color', function (color) {
+	//	socket.color = color;
+	//});
 
-	socket.on('chat message', function (msg) {
+	socket.on('chat message', function (data) {
+		var msg = data.message;
+		data.username = socket.username;
 		if (msg[0] !== '/') {
-			socket.broadcast.emit('chat message', {
-				message: msg,
-				username: socket.username,
-				color: socket.color
-			});
 
-			history.push({
-				message: msg,
-				username: socket.username,
-				color: socket.color
-			})
+			socket.broadcast.emit('chat message', data);
+			history.push(data)
+
 			if (history.length > 20) {
 				history.shift();
 			}
@@ -112,8 +107,7 @@ io.on('connection', function (socket) {
 		}
 	});
 	socket.on('image',function(data){
-		socket.emit('image',data);
-		socket.broadcast.emit('image',data)
+		socket.broadcast.emit('chat message',data)
 	});
 	socket.on('user typing', function(data){
 		if(data.typing){
