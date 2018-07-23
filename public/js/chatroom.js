@@ -15,11 +15,7 @@ $(function() {
     if(message.trim()){
       $('#m').val('');
       insertMessage({username: username, message: message, color: color});
-      chat[0].scrollTop = chat[0].scrollHeight;
       socket.emit('chat message', message);
-      if(sendingImage){
-        socket.emit('image', imageData);
-      }
     }
   };
 
@@ -29,7 +25,6 @@ $(function() {
     reader.addEventListener("load", function(){
       sendingImage = true;
       imageData = reader.result;
-      // socket.emit('image', reader.result);
     }, false);
     if(img){
       reader.readAsDataURL(img);
@@ -43,12 +38,10 @@ $(function() {
     sendingImage = false;
     imageData = '';
     imagePicker.val('');
-    chat[0].scrollTop = chat[0].scrollHeight;
   }
 
   function announce(msg){
     chat.append($('<li>').addClass('announcement').text(msg));
-    chat[0].scrollTop = chat[0].scrollHeight;
   };
 
   function setUsername(){
@@ -71,7 +64,6 @@ $(function() {
     var contentTag = $('<span class="content">').text(data.message);
     var result = $('<li>').append(userTag,' : ',contentTag);
     chat.append(result);
-    chat[0].scrollTop = chat[0].scrollHeight;
   };
 
   $('#color').change(function(){
@@ -83,13 +75,18 @@ $(function() {
     if(evt.keyCode === 13){
       if(username){
         sendMessage();
+        if(sendingImage){
+          socket.emit('image', imageData);
+        }
       }else{
         setUsername();
       }
     }
   });
 
-
+  $("#messages").bind("DOMNodeInserted",function(){
+    chat[0].scrollTop = chat[0].scrollHeight;
+  });
 
   $('form').on('keyup keypress', function(e) {
     var keyCode = e.keyCode || e.which;
@@ -101,6 +98,9 @@ $(function() {
 
   $('form').submit(function(){
     sendMessage();
+    if(sendingImage){
+      socket.emit('image', imageData);
+    }
     return false
   });
 
