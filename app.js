@@ -111,7 +111,7 @@ io.on('connection', function (socket) {
 	});
 	socket.on('user typing', function(data){
 		if(data.typing){
-			socket.broadcast.emit('user typing', {username: socket.username, color: socket.color});
+			socket.broadcast.emit('user typing', socket.username);
 		} else {
 			socket.broadcast.emit('stop typing', socket.username);
 		}

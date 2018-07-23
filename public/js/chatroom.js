@@ -58,15 +58,10 @@ $(function() {
       socket.emit('new user', username);
     }
   };
-  // Attempt at fixing the mobile undefined bug, didnt work but WIP
-  // function resetUsername(){
-  //   username = '';
-  //   login.fadeIn();
-  //   chatroom.fadeOut();
-  // }
+
 // Send message to other clients
   function insertMessage(data){
-    var userTag = $('<span class="username">').css("color", data.color).text(data.username);
+    var userTag = $('<span class="username">').css("color", color).text(data.username);
     var contentTag = $('<span class="content">').text(data.message);
     var result = $('<li>').append(userTag,' : ',contentTag);
     chat.append(result);
@@ -84,6 +79,7 @@ $(function() {
       if(!username){
         setUsername();
       }
+      return false
   });
 
   $("#messages").bind("DOMNodeInserted",function(){
@@ -100,6 +96,8 @@ $(function() {
 
   $('#ChatInput').submit(function(){
     sendMessage();
+    socket.emit('user typing', {username: username, typing: false});
+    typing = false;
     return false
   });
 
@@ -119,16 +117,18 @@ $(function() {
   });
 
   function showIsTyping(data){
-    var user = $('<span class="username">').css("color", data.color).attr("id", data.username).text(data.username + ' is typing... ');
+    var user = $('<span class="username">').css("color", color).attr("id", data).text(data + ' is typing... ');
     isTyping.append(user);
     isTyping.fadeIn();
   };
   function stopIsTyping(username){
     var id = '#' + username;
-    if($(id).length == 1){
+    if($('#isTyping .username').length == 1){
       isTyping.fadeOut(function(){
         $(id).remove();
       });
+    } else {
+      $(id).remove();
     }
     
   };
