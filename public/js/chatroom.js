@@ -12,10 +12,14 @@ $(function() {
 // Appends message to current client
   function sendMessage(){
     var message = $('#m').val();
-    if(message.trim()){
+    if(message.trim() || imageData){
       $('#m').val('');
-      insertMessage({username: username, message: message, color: color});
-      socket.emit('chat message', message);
+      var messageData = {username: username, message: message, color: color}
+      if(sendingImage){
+        messageData.img = imageData;
+      }
+      insertMessage(messageData);
+      socket.emit('chat message', messageData);
     }
   };
 
@@ -64,12 +68,15 @@ $(function() {
     var contentTag = $('<span class="content">').text(data.message);
     var result = $('<li>').append(userTag,' : ',contentTag);
     chat.append(result);
+    if(data.img && data.message[0]!=='/'){
+      sendImage(data.img);
+    }
   };
 
-  $('#color').change(function(){
-    color = colorPicker.val();
-    socket.emit('change color', color);
-  });
+  //$('#color').change(function(){
+  //  color = colorPicker.val();
+  //  socket.emit('change color', color);
+  //});
 
   $('#UsernameInput').submit(function(evt){
       if(!username){
@@ -91,9 +98,6 @@ $(function() {
 
   $('#ChatInput').submit(function(){
     sendMessage();
-    if(sendingImage){
-      socket.emit('image', imageData);
-    }
     return false
   });
 
