@@ -70,11 +70,6 @@ $(function() {
     }
   };
 
-  //$('#color').change(function(){
-  //  color = colorPicker.val();
-  //  socket.emit('change color', color);
-  //});
-
   $('#UsernameInput').submit(function(evt){
       if(!username){
         setUsername();
@@ -85,14 +80,6 @@ $(function() {
   $("#messages").bind("DOMNodeInserted",function(){
     chat[0].scrollTop = chat[0].scrollHeight;
   });
-
-  //$('form').on('keyup keypress', function(e) {
-  //  var keyCode = e.keyCode || e.which;
-  //  if (keyCode === 13) { 
-  //    e.preventDefault();
-  //    return false;
-  //  }
-  //});
 
   $('#ChatInput').submit(function(){
     sendMessage();
@@ -119,12 +106,12 @@ $(function() {
   function showIsTyping(data){
     var user = $('<span class="username">').css("color", color).attr("id", data).text(data + ' is typing... ');
     isTyping.append(user);
-    isTyping.fadeIn();
+    isTyping.fadeIn(200);
   };
   function stopIsTyping(username){
     var id = '#' + username;
     if($('#isTyping .username').length == 1){
-      isTyping.fadeOut(function(){
+      isTyping.fadeOut(200, function(){
         $(id).remove();
       });
     } else {
@@ -146,7 +133,6 @@ $(function() {
   });
   socket.on('user disconnect', function(data){
     announce(data.username + ' has disconnected!');
-    // resetUsername();
   });
   socket.on('server message', function(message){
     announce(message);

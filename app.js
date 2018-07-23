@@ -42,10 +42,6 @@ io.on('connection', function (socket) {
 		UsersOnline = UsersOnline.filter((user) => user.id !== socket.id);
 	});
 
-	//socket.on('change color', function (color) {
-	//	socket.color = color;
-	//});
-
 	socket.on('chat message', function (data) {
 		var msg = data.message;
 		data.username = socket.username;
