@@ -17,7 +17,7 @@ app.get("/", function (req, res) {
 
 io.on('connection', function (socket) {
 	var newUser = true;
-
+	socket.emit('load history', history);
 	socket.on('new user', function (name) {
 		if (newUser) {
 			var user = {
@@ -32,7 +32,6 @@ io.on('connection', function (socket) {
 		socket.broadcast.emit('user connected', {
 			username: socket.username
 		});
-		socket.emit('load history', history);
 	});
 
 	socket.on('disconnect', function () {
