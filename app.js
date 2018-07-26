@@ -42,8 +42,10 @@ io.on('connection', function (socket) {
 	});
 
 	socket.on('chat message', function (data) {
+		let date = new Date(socket.handshake.time);
 		var msg = data.message;
 		data.username = socket.username;
+		data.time = date.toLocaleTimeString();
 		if (msg[0] !== '/') {
 
 			socket.broadcast.emit('chat message', data);
