@@ -19,7 +19,7 @@ io.on('connection', function (socket) {
 	var newUser = true;
 	socket.emit('load history', history);
 	socket.on('new user', function (name) {
-		if (newUser) {
+		if (newUser && name) {
 			var user = {
 				username:name,
 				id:socket.id
@@ -42,10 +42,8 @@ io.on('connection', function (socket) {
 	});
 
 	socket.on('chat message', function (data) {
-		let date = new Date(socket.handshake.time);
 		var msg = data.message;
 		data.username = socket.username;
-		data.time = date.toLocaleTimeString();
 		if (msg[0] !== '/') {
 
 			socket.broadcast.emit('chat message', data);

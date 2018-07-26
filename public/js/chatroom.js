@@ -17,7 +17,7 @@ $(function() {
     if(message.trim() || imageData){
       $('#m').val('');
       let time = new Date();
-      var messageData = {time: time.toLocaleTimeString(), username: username, message: message, color: color}
+      var messageData = {time: time, username: username, message: message, color: color}
       if(sendingImage){
         messageData.img = imageData;
       }
@@ -62,8 +62,9 @@ $(function() {
 
 // Send message to other clients
   function insertMessage(data){
-    console.log(data.time);
-    var dateTag = $('<span class="date">').text(data.time);  
+    data.time = new Date(data.time);
+    let time = data.time.toLocaleTimeString();
+    var dateTag = $('<span class="date">').text(time);  
     var userTag = $('<span class="username">').css("color", color).text(data.username);
     var contentTag = $('<span class="content">').text(data.message);
     var result = $('<li>').append('[',dateTag,'] ',userTag,' : ',contentTag);
