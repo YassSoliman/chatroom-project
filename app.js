@@ -43,8 +43,8 @@ io.on('connection', function (socket) {
 
 	socket.on('chat message', function (data) {
 		var msg = data.message;
-		data.username = socket.username;
-		if (msg[0] !== '/') {
+		socket.username = data.username;
+        if (msg[0] !== '/') {
 
 			socket.broadcast.emit('chat message', data);
 			history.push(data)
