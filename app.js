@@ -16,23 +16,34 @@ app.get("/", function (req, res) {
 });
 
 io.on('connection', function (socket) {
-	var newUser = true;
+    function makeUser(name){
+        var user = {
+            username: name,
+            id: socket.id
+        };
+        UsersOnline.push(user);
+        socket.username = name;
+        socket.color = '#000002';
+    }
+    var newUser = true;
 	socket.emit('load history', history);
 	socket.on('new user', function (name) {
-		if (newUser && name) {
-			var user = {
-				username:name,
-				id:socket.id
-			};
-			UsersOnline.push(user)
-			socket.username = name;
-			socket.color = '#000002';
-		}
-		
-		socket.broadcast.emit('user connected', {
-			username: socket.username
-		});
+        makeUser(name);
+         
+	    socket.broadcast.emit('user connected', {
+	    	username: socket.username
+	    });
+        newUser = false;
 	});
+
+    if(!socket.username && !newUser){
+        socket.emit('reconnect');
+    }
+
+    socket.on('user reconnect', function(user){
+        makeUser(user);
+        socket.broadcast.emit('user reconnected', {username: socket.username});
+    });
 
 	socket.on('disconnect', function () {
 		socket.broadcast.emit('user disconnect', {
@@ -43,7 +54,6 @@ io.on('connection', function (socket) {
 
 	socket.on('chat message', function (data) {
 		var msg = data.message;
-		socket.username = data.username;
         if (msg[0] !== '/') {
 
 			socket.broadcast.emit('chat message', data);
