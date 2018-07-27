@@ -153,11 +153,13 @@ $(function() {
   socket.on('stop typing', function(data){
     stopIsTyping(data);
   });
-  socket.on('user reconnected', function(data){
-    announce(data.username + " has reconnected!");
+  socket.on('disconnect', function(){
+    announce("You have disconnected");
   });
   socket.on('reconnect', function(){
-    socket.emit('user reconnect', username);
     announce("You have reconnected!");
+    if(username){
+        socket.emit('new user', username);
+    }
   });
 });
