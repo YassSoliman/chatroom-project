@@ -1,8 +1,8 @@
 var Crypto = require('crypto');
-function User(username, socketId,secretCode){
+function User(username, socketId,secretCode,hash){
     this.username = username;
     this.socketId = socketId;
-    this.hash = Crypto.createHash('md5').update(secretCode+username).digest('hex');
+    this.hash = hash||(Crypto.createHash('md5').update(secretCode+username).digest('hex'));
 }
 
 User.prototype.toString = function(){

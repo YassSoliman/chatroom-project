@@ -3,7 +3,7 @@ var app = express();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
 var users = {};
-var secretCode = new Date().getTime();
+var SecretCode = new Date().getTime();
 app.use(express.static("public"));
 app.set("view engine", "ejs");
 var User = require('./Object/User');
@@ -15,9 +15,10 @@ var number = 0;
 app.get("/", function (req, res) {
 	res.render('index');
 });
-
+function IsNewUser(user){
+	return !!UsersOnline.some((userIndex)=>userIndex.isEqual(user));
+}
 io.on('connection', function (socket) {
-<<<<<<< HEAD
     //function makeUser(name){
 	//	socket.id = ++number+'';
     //    var user = {
@@ -30,36 +31,20 @@ io.on('connection', function (socket) {
     //}
     var newUser = true;
 	socket.emit('load history', history);
-	socket.on('new user', function (name) {
-		var user = new User(name,socket.id,secretCode);
-		UsersOnline.push(user);
-		socket.username = name;
-        //makeUser(name);
-         
-	    socket.broadcast.emit('user connected', {
-	    	username: socket.username
-		});
-		socket.emit('Session',user.MakeSession());
-        newUser = false;
-=======
-    var newUser = true;
-    function makeUser(name){
-        var user = {
-            username: name,
-            id: socket.id
-        };
-        UsersOnline.push(user);
-        socket.username = name;
-        socket.color = '#000002';
-    }
-	socket.emit('load history', history);
-	socket.on('new user', function (name) {
-        makeUser(name);
-        newUser = false;
-	    socket.broadcast.emit('user connected', {
-	    	username: socket.username
-	    });
->>>>>>> 9e830139da532aec87ed36d6dc873ba07d63adc8
+	socket.on('new user', function (data) {
+
+		var user = new User(data.username,socket.id,SecretCode,data.token);
+		if(IsNewUser(user)){
+			UsersOnline.push(user);
+			socket.username = data.username;
+			//makeUser(name);
+			newUser = false;
+			socket.broadcast.emit('user connected', {
+				username: socket.username
+			});
+			socket.emit('Session',user.MakeSession());
+		}
+		
 	});
 
 	socket.on('disconnect', function () {

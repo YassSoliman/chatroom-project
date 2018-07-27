@@ -11,6 +11,7 @@ $(function() {
   var imageData;
   var isTyping = $('#isTyping');
   var typing = false;
+  var Session = null;
 // Appends message to current client
   function sendMessage(){
     var message = $('#m').val();
@@ -56,7 +57,7 @@ $(function() {
     if(username.trim()){
       login.fadeOut();
       chatroom.fadeIn();
-      socket.emit('new user', username);
+      socket.emit('new user', {username:username});
     }
   };
 
@@ -159,7 +160,10 @@ $(function() {
   socket.on('reconnect', function(){
     announce("You have reconnected!");
     if(username){
-        socket.emit('new user', username);
+        socket.emit('new user', Session);
     }
   });
+  socket.on('Session',function(session){
+    Sesison = session;
+  })
 });
