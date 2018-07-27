@@ -3,36 +3,42 @@ var app = express();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
 var users = {};
-
+var secretCode = new Date().getTime();
 app.use(express.static("public"));
 app.set("view engine", "ejs");
+var User = require('./Object/User');
 
 var history = [];
 var UsersOnline = []
-
+var number = 0;
 
 app.get("/", function (req, res) {
 	res.render('index');
 });
 
 io.on('connection', function (socket) {
-    function makeUser(name){
-        var user = {
-            username: name,
-            id: socket.id
-        };
-        UsersOnline.push(user);
-        socket.username = name;
-        socket.color = '#000002';
-    }
+    //function makeUser(name){
+	//	socket.id = ++number+'';
+    //    var user = {
+    //        username: name,
+    //        id: socket.id
+    //    };
+    //    UsersOnline.push(user);
+    //    socket.username = name;
+    //    socket.color = '#000002';
+    //}
     var newUser = true;
 	socket.emit('load history', history);
 	socket.on('new user', function (name) {
-        makeUser(name);
+		var user = new User(name,socket.id,secretCode);
+		UsersOnline.push(user);
+		socket.username = name;
+        //makeUser(name);
          
 	    socket.broadcast.emit('user connected', {
 	    	username: socket.username
-	    });
+		});
+		socket.emit('Session',user.MakeSession());
         newUser = false;
 	});
 
@@ -99,7 +105,7 @@ io.on('connection', function (socket) {
 						socket.to(userToMessage.id).emit('chat message',{
 							message: whisperMessage,
 							username: socket.username,
-							color: socket.color
+							color: data.color
 						});
 					}else{
 						socket.emit('server message', 'No user found');
