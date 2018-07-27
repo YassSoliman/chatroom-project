@@ -16,7 +16,7 @@ app.get("/", function (req, res) {
 	res.render('index');
 });
 function IsNewUser(user){
-	return !!UsersOnline.some((userIndex)=>userIndex.isEqual(user));
+	return !UsersOnline.some((userIndex)=>user.isEqual(userIndex));
 }
 io.on('connection', function (socket) {
     //function makeUser(name){

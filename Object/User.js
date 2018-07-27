@@ -9,7 +9,7 @@ User.prototype.toString = function(){
     return this.username;
 }
 User.prototype.isEqual = function(userCompare){
-    return (userCompare.hash === this.hash)
+    return (userCompare && userCompare.hash === this.hash)
 };
 User.prototype.MakeSession = function(){
     return {

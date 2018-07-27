@@ -11,7 +11,7 @@ $(function() {
   var imageData;
   var isTyping = $('#isTyping');
   var typing = false;
-  var Session = null;
+  var Session;
 // Appends message to current client
   function sendMessage(){
     var message = $('#m').val();
@@ -164,6 +164,6 @@ $(function() {
     }
   });
   socket.on('Session',function(session){
-    Sesison = session;
+    Session = session;
   })
 });
