@@ -11,7 +11,7 @@ $(function() {
   var imageData;
   var isTyping = $('#isTyping');
   var typing = false;
-  var Session;
+  var Session = {};
 // Appends message to current client
   function sendMessage(){
     var message = $('#m').val();
@@ -74,6 +74,10 @@ $(function() {
       sendImage(data.img);
     }
   };
+
+  $('#color').change(function(){
+    color = colorPicker.val();
+  });
 
   $('#UsernameInput').submit(function(evt){
       if(!username){
