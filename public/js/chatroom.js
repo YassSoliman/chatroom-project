@@ -66,7 +66,7 @@ $(function() {
     data.time = new Date(data.time);
     let time = data.time.toLocaleTimeString();
     var dateTag = $('<span class="date">').text(time);  
-    var userTag = $('<span class="username">').css("color", color).text(data.username);
+    var userTag = $('<span class="username">').css("color", data.color).text(data.username);
     var contentTag = $('<span class="content">').text(data.message);
     var result = $('<li>').append('[',dateTag,'] ',userTag,' : ',contentTag);
     chat.append(result);
