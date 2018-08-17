@@ -75,6 +75,10 @@ $(function() {
     }
   };
 
+  $('#color').change(function(){
+    color = colorPicker.val();
+  });
+
   $('#UsernameInput').submit(function(evt){
       if(!username){
         setUsername();

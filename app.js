@@ -19,24 +19,14 @@ function IsNewUser(user){
 	return !UsersOnline.some((userIndex)=>user.isEqual(userIndex));
 }
 io.on('connection', function (socket) {
-    //function makeUser(name){
-	//	socket.id = ++number+'';
-    //    var user = {
-    //        username: name,
-    //        id: socket.id
-    //    };
-    //    UsersOnline.push(user);
-    //    socket.username = name;
-    //    socket.color = '#000002';
-    //}
     var newUser = true;
 	socket.emit('load history', history);
 	socket.on('new user', function (data) {
 
 		var user = new User(data.Username,socket.id,SecretCode,data.token);
 		if(IsNewUser(user)){
-			socket.username = data.Username;
-			//makeUser(name);
+			UsersOnline.push(user);
+			socket.username = data.username;
 			newUser = false;
 			socket.broadcast.emit('user connected', {
 				username: socket.username
