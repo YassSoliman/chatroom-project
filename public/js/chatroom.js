@@ -11,7 +11,7 @@ $(function() {
   var imageData;
   var isTyping = $('#isTyping');
   var typing = false;
-  var Session;
+  var Session = {};
 // Appends message to current client
   function sendMessage(){
     var message = $('#m').val();
@@ -57,7 +57,7 @@ $(function() {
     if(username.trim()){
       login.fadeOut();
       chatroom.fadeIn();
-      socket.emit('new user', {username:username});
+      socket.emit('new user', {Username:username});
     }
   };
 
@@ -165,5 +165,5 @@ $(function() {
   });
   socket.on('Session',function(session){
     Session = session;
-  })
+  });
 });
