@@ -7,6 +7,7 @@ var SecretCode = new Date().getTime();
 app.use(express.static("public"));
 app.set("view engine", "ejs");
 var User = require('./Object/User');
+const PORT = process.env.PORT || 5000
 
 var history = [];
 var UsersOnline = []
@@ -15,6 +16,7 @@ var number = 0;
 app.get("/", function (req, res) {
 	res.render('index');
 });
+
 function IsNewUser(user){
 	return !UsersOnline.some((userIndex)=>user.isEqual(userIndex));
 }
@@ -117,6 +119,6 @@ io.on('connection', function (socket) {
 
 });
 
-http.listen(3000, function () {
-	console.log("Server started on *:3000");
+http.listen(PORT, function () {
+	console.log(`Server started on ${ PORT }`);
 });
