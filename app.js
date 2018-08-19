@@ -25,7 +25,7 @@ io.on('connection', function (socket) {
 	socket.emit('load history', history);
 	socket.on('new user', function (data) {
 
-		var user = new User(data.username,socket.id,SecretCode,data.token);
+		var user = new User(data.Username,socket.id,SecretCode,data.token);
 		if(IsNewUser(user)){
 			UsersOnline.push(user);
 			socket.username = data.username;
@@ -34,7 +34,11 @@ io.on('connection', function (socket) {
 				username: socket.username
 			});
 			socket.emit('Session',user.MakeSession());
+		}else{
+			UsersOnline = UsersOnline.filter((user) => user.id !== socket.id);
 		}
+		UsersOnline.push(user);
+
 		
 	});
 
