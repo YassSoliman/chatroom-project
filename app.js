@@ -113,14 +113,14 @@ io.on('connection', function (socket) {
 	socket.on('image',function(data){
 		socket.broadcast.emit('chat message',data)
 	});
-	socket.on('user typing', function(data){
+	/*socket.on('user typing', function(data){
 		if(data.typing){
 			socket.broadcast.emit('user typing', socket.username);
 		} else {
 			socket.broadcast.emit('stop typing', socket.username);
 		}
 	});
-
+*/
 });
 
 http.listen(PORT, function () {

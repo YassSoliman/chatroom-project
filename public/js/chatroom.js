@@ -152,12 +152,14 @@ $(function() {
   socket.on('image', function(data){
     sendImage(data);
   });
+  /*
   socket.on('user typing', function(data){
     showIsTyping(data);
   });
   socket.on('stop typing', function(data){
     stopIsTyping(data);
   });
+  */
   socket.on('disconnect', function(){
     announce("You have disconnected");
   });
