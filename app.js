@@ -28,11 +28,12 @@ io.on('connection', function (socket) {
 		var user = new User(data.Username,socket.id,SecretCode,data.token);
 		if(IsNewUser(user)){
 			UsersOnline.push(user);
-			socket.username = data.username;
+			socket.username = data.Username;
 			newUser = false;
 			socket.broadcast.emit('user connected', {
 				username: socket.username
 			});
+
 			socket.emit('Session',user.MakeSession());
 		}else{
 			UsersOnline = UsersOnline.filter((user) => user.id !== socket.id);
